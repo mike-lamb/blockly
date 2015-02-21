@@ -31,6 +31,8 @@ goog.require('Blockly.Comment');
 goog.require('Blockly.Connection');
 goog.require('Blockly.Input');
 goog.require('Blockly.Mutator');
+goog.require('Blockly.MutatorPlus');
+goog.require('Blockly.MutatorMinus');
 goog.require('Blockly.Warning');
 goog.require('Blockly.Workspace');
 goog.require('Blockly.Xml');
@@ -1143,6 +1145,24 @@ Blockly.Block.prototype.setWarningText = function(text) {
  * @param {Blockly.Mutator} mutator A mutator dialog instance or null to remove.
  */
 Blockly.Block.prototype.setMutator = function(mutator) {
+  // NOP.
+};
+
+/**
+ * Block's mutatorPlus icon (if any).
+ * 
+ * @type {Blockly.MutatorPlus}
+ */
+Blockly.Block.prototype.mutatorPlus = function(mutator) {
+  // NOP.
+};
+
+/**
+ * Block's mutatorMinus icon (if any).
+ * 
+ * @type {Blockly.MutatorMinus}
+ */
+Blockly.Block.prototype.mutatorMinus = function(mutator) {
   // NOP.
 };
 

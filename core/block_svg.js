@@ -81,6 +81,12 @@ Blockly.BlockSvg.prototype.initSvg = function() {
   if (this.mutator) {
     this.mutator.createIcon();
   }
+  if (this.mutatorPlus) {
+    this.mutatorPlus.createIcon();
+  }
+  if (this.mutatorMinus) {
+    this.mutatorMinus.createIcon();
+  }
   this.updateColour();
   if (!Blockly.readOnly && !this.eventsInit_) {
     Blockly.bindEvent_(this.getSvgRoot(), 'mousedown', this,
@@ -127,6 +133,18 @@ Blockly.BlockSvg.prototype.unselect = function() {
 Blockly.BlockSvg.prototype.mutator = null;
 
 /**
+ * Block's mutatorPlus icon (if any).
+ * @type {Blockly.MutatorPlus}
+ */
+Blockly.BlockSvg.prototype.mutatorPlus = null;
+
+/**
+ * Block's mutatorMinus icon (if any).
+ * @type {Blockly.MutatorMinus}
+ */
+Blockly.BlockSvg.prototype.mutatorMinus = null;
+
+/**
  * Block's comment icon (if any).
  * @type {Blockly.Comment}
  */
@@ -146,6 +164,12 @@ Blockly.BlockSvg.prototype.getIcons = function() {
   var icons = [];
   if (this.mutator) {
     icons.push(this.mutator);
+  }
+  if (this.mutatorPlus) {
+      icons.push(this.mutatorPlus);
+  }
+  if (this.mutatorMinus) {
+      icons.push(this.mutatorMinus);
   }
   if (this.comment) {
     icons.push(this.comment);
@@ -833,7 +857,7 @@ Blockly.BlockSvg.TAB_PATH_DOWN_HIGHLIGHT_RTL = 'v 6.5 m -' +
  * @const
  */
 Blockly.BlockSvg.TOP_LEFT_CORNER_START =
-    'm 0,' + Blockly.BlockSvg.CORNER_RADIUS;
+    'm 1,' + Blockly.BlockSvg.CORNER_RADIUS;
 /**
  * SVG start point for drawing the top-left corner's highlight in RTL.
  * @const
@@ -846,7 +870,7 @@ Blockly.BlockSvg.TOP_LEFT_CORNER_START_HIGHLIGHT_RTL =
  * @const
  */
 Blockly.BlockSvg.TOP_LEFT_CORNER_START_HIGHLIGHT_LTR =
-    'm 1,' + (Blockly.BlockSvg.CORNER_RADIUS - 1);
+    'm 0,' + (Blockly.BlockSvg.CORNER_RADIUS - 1);
 /**
  * SVG path for drawing the rounded top-left corner.
  * @const
@@ -1184,6 +1208,46 @@ Blockly.BlockSvg.prototype.setMutator = function(mutator) {
       mutator.createIcon();
     }
   }
+};
+
+
+/**
+ * Give this block a mutatorPlus button.
+ * 
+ * @param {Blockly.MutatorPlus}
+ *            mutatorPlus A mutatorPlus instance or null to remove.
+ */
+Blockly.Block.prototype.setMutatorPlus = function(mutatorPlus) {
+    if (this.mutatorPlus && this.mutatorPlus !== mutatorPlus) {
+        this.mutatorPlus.dispose();
+    }
+    if (mutatorPlus) {
+        mutatorPlus.block_ = this;
+        this.mutatorPlus = mutatorPlus;
+        if (this.rendered) {
+            mutatorPlus.createIcon();
+        }
+    }
+};
+
+
+/**
+ * Give this block a mutatorMinus button.
+ * 
+ * @param {Blockly.MutatorMinus}
+ *            mutatorMinus A mutatorMinus instance or null to remove.
+ */
+Blockly.Block.prototype.setMutatorMinus = function(mutatorMinus) {
+    if (this.mutatorMinus && this.mutatorMinus !== mutatorMinus) {
+        this.mutatorMinus.dispose();
+    }
+    if (mutatorMinus) {
+        mutatorMinus.block_ = this;
+        this.mutatorMinus = mutatorMinus;
+        if (this.rendered) {
+            mutatorMinus.createIcon();
+        }
+    }
 };
 
 /**
@@ -1889,9 +1953,9 @@ Blockly.BlockSvg.prototype.renderDrawLeft_ =
     this.outputConnection.moveTo(connectionsXY.x, connectionsXY.y);
     // This connection will be tightened when the parent renders.
     steps.push('V', Blockly.BlockSvg.TAB_HEIGHT);
-    steps.push('c 0,-10 -' + Blockly.BlockSvg.TAB_WIDTH + ',8 -' +
-        Blockly.BlockSvg.TAB_WIDTH + ',-7.5 s ' + Blockly.BlockSvg.TAB_WIDTH +
-        ',2.5 ' + Blockly.BlockSvg.TAB_WIDTH + ',-7.5');
+    steps.push('c 0,-10 -' + ( 1 + Blockly.BlockSvg.TAB_WIDTH ) + ',8 -' +
+        ( 1 + Blockly.BlockSvg.TAB_WIDTH ) + ',-7.5 s ' + ( 1 + Blockly.BlockSvg.TAB_WIDTH ) +
+        ',2.5 ' + ( 1 + Blockly.BlockSvg.TAB_WIDTH) + ',-7.5');
     if (Blockly.RTL) {
       highlightSteps.push('M', (Blockly.BlockSvg.TAB_WIDTH * -0.3) + ',8.9');
       highlightSteps.push('l', (Blockly.BlockSvg.TAB_WIDTH * -0.45) + ',-2.1');
